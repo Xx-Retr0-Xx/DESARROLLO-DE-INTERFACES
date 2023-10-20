@@ -4,15 +4,16 @@ const config = require('../config')
 
 async function getUserData (user, password) {
     const rows = await db.query(`
-            Insert into usuarios
-            (nombre, login, password, rol)
-            values ('Marcos','muij','julio',"estudiante")
-    `)
-
-    /*SELECT nombre, rol 
+            SELECT nombre, rol 
             FROM usuarios 
             where login='${user}' 
-            AND password='${password}'*/
+            AND password='${password}'
+            
+    `)
+
+    /*Insert into usuarios
+            (nombre, login, password, rol)
+            values ('Marcos','muij','julio',"estudiante")'*/
     const data = helper.emptyOrRows(rows[0])
 
     return {

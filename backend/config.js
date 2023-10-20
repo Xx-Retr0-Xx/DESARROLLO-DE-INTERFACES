@@ -5,6 +5,7 @@ const config = {
         user: "root",
         password: "",
         database: "bdgestion",
+        port:"3306",
         connectTimeout: 60000
     },
 }
