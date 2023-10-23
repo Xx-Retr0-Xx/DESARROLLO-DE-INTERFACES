@@ -9,29 +9,23 @@ const theme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#3f51b5',
+      main: '#d85d00',
     },
     secondary: {
-      main: '#f50057',
+      main: '#8d6e63',
     },
     background: {
-      default: '#f17070',
-      paper: '#a3cbff',
+      default: '#f7a3a3',
+      paper: '#a3f7f7',
     },
-    text: {
-      primary: '#734a3e',
-      secondary: '#212121',
-      disabled: '#1b5e20',
+    error: {
+      main: '#ff0000',
     },
   },
   typography: {
     fontFamily: 'Oswald',
-    fontSize: 10,
-    fontWeightLight: 1000,
-    fontWeightRegular: 100,
-    h1: {
-      fontFamily: 'Oswald',
-    },
+    fontSize: 18,
+    htmlFontSize: 20,
   },
 })
 
