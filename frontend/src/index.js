@@ -5,6 +5,7 @@ import App from './App';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+//Marcos Mayor Lorenzo
 const theme = createTheme({
   palette: {
     mode: 'light',
@@ -32,8 +33,8 @@ const theme = createTheme({
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
 <React.StrictMode>
-  <CssBaseline />
     <ThemeProvider theme={theme}>
+      <CssBaseline />
       <App />
     </ThemeProvider>
 </React.StrictMode>

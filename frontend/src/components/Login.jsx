@@ -1,50 +1,84 @@
 import React from 'react'
 import Button from '@mui/material/Button'
-import {Box, TextField} from '@mui/material';
+import { Avatar, Box, Grid, Paper, TextField, } from '@mui/material';
 import { useState } from 'react';
+import LockIcon from '@mui/icons-material/Lock';
 
-function Login () {
+function Login() {
 
-const [login, setLogin] = useState('')
+    const [login, setLogin] = useState({ user: '', pass: '' })
 
-const isVerifiedUser = () => {
-    fetch(`http://localhost:3030/login?user=${login}&password=${'123456789'}`)
-    .then(response => response.json())
-    .then(response => {
-        if (response) {
-          console.log(response)   
+    const isVerifiedUser = () => {
+        fetch(`http://localhost:3030/login?user=${login.user}&password=${login.pass}`)
+            .then(response => response.json())
+            .then(response => {
+                if (response) {
+                    if(response.length!==0){
+                        console.log(response)
+                    }else {
+                        console.log('Datos incorrectos')
+                    }
+                    
+                }
+            })
+    }
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        if (login.user.length !== 0 && login.pass.length !== 0) {
+            isVerifiedUser()
+        } else {
+            console.log(`El usuario o la contraseña estan vacios`)
         }
-    })
-}
 
-const handleSubmit = (e) => {
-    e.preventDefault()
-    isVerifiedUser()
-    console.log(login)
-}
+    }
 
-return <>
-    <Box component='form' onSubmit={handleSubmit}>
-        <TextField 
-            id='login' 
-            label='Usuario' 
-            variant='outlined' 
-            fullWidth
-            autoFocus
-
-            value={login}
-            onChange={(event) => setLogin(event.target.value)}
-        />
-
-        <Button 
-            type="submit" 
-            variant='contained' 
-            fullWidth
+    return <>
+        <Grid container
+            justifyContent="center"
+            alignItems="center"
+            style={{ minHeight: '100vh' }}
         >
-         Acceder
-        </Button>
-    </Box>
-</>
+            <Grid item xs={3} md={3} l={2} xl={2}>
+                <Paper id='paper'>
+                    <Grid container
+                        justifyContent="center"
+                        alignItems="center"
+                    >
+                        <Avatar >
+                            <LockIcon color="error" />
+                        </Avatar>
+                        <Box id='caja' component='form' onSubmit={handleSubmit}>
+                            <TextField
+                                id='login'
+                                label='Usuario'
+                                variant='outlined'
+                                fullWidth
+                                autoFocus
+                                onChange={(event) => { setLogin({ ...login, user: event.target.value }) }}
+                            />
+                            <br />
+                            <TextField
+                                id='password'
+                                label='Contraseña'
+                                variant='outlined'
+                                type='password'
+                                fullWidth
+                                onChange={(event) => { setLogin({ ...login, pass: event.target.value }) }}
+                            />
+                            <Button
+                                id='boton'
+                                type="submit"
+                                variant='contained'
+                                fullWidth
+                            >
+                                Acceder
+                            </Button>
+                        </Box>
+                    </Grid>
+                </Paper>
+            </Grid>
+        </Grid>
+    </>
 }
 export default Login
 
@@ -52,4 +86,15 @@ export default Login
 <Container>
     <Typography variant="h1" component="h2">App con typography</Typography>
     <Button color="success" variant="contained"> Hola </Button>
-</Container>*/
+</Container>
+
+const isVerifiedUser = () => {
+        fetch(`http://localhost:3030/login?user=${login.user}&password=${login.pass}`)
+            .then(response => response.json())
+            .then(response => {
+                if (response) {
+                    console.log(response)
+                }
+            })
+    }
+*/
