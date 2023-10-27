@@ -13,10 +13,10 @@ function Login() {
             .then(response => response.json())
             .then(response => {
                 if (response) {
-                    if(response.length!==0){
-                        console.log(response)
+                    if(Object.keys(response.data).length === 0){
+                        console.log('Datos incorrectos') 
                     }else {
-                        console.log('Datos incorrectos')
+                        console.log(response)
                     }
                     
                 }
