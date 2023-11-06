@@ -1,100 +1,124 @@
-import React from 'react'
-import Button from '@mui/material/Button'
-import { Avatar, Box, Grid, Paper, TextField, } from '@mui/material';
-import { useState } from 'react';
-import LockIcon from '@mui/icons-material/Lock';
+import React, { useState } from 'react';
+import Button from '@mui/material/Button';
+import { Avatar, Container, Paper, Typography, TextField, Box } from '@mui/material';
+import loginImage from './login.jpg';
+
+/**
+ * AITOR SÁNCHEZ JIMÉNEZ
+ */
+
 
 function Login() {
 
-    const [login, setLogin] = useState({ user: '', pass: '' })
+  // Declaramos las variables login y password
+  const [login, setLogin] = useState('');
+  const [password, setPassword] = useState('');
 
-    const isVerifiedUser = () => {
-        fetch(`http://localhost:3030/login?user=${login.user}&password=${login.pass}`)
-            .then(response => response.json())
-            .then(response => {
-                if (response) {
-                    if(Object.keys(response.data).length === 0){
-                        console.log('Datos incorrectos') 
-                    }else {
-                        console.log(response)
-                    }
-                    
-                }
-            })
-    }
-    const handleSubmit = (e) => {
-        e.preventDefault()
-        if (login.user.length !== 0 && login.pass.length !== 0) {
-            isVerifiedUser()
+
+  // Se crea una función para manejar el envío del formulario:
+  const handleSubmit = async (event) => {
+    event.preventDefault(); // Evita que la página se recargue al enviar el formulario
+
+      //Comunica con el backend para verificar las credenciales con el metodo POST
+      try {
+        const response = await fetch('http://localhost:3030/login', { //Redirección hacia la API del backend
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ user: login, password }),
+        });
+        
+        const data = await response.json()
+
+        if (login === data.data.login && password === data.data.password) { //Si establece la conexión con el backend mostrará los datos
+          window.alert('Inicio de sesión correcto, datos cargados en la consola')
+          console.log('Datos correctos:', data.data);
+
         } else {
-            console.log(`El usuario o la contraseña estan vacios`)
+          window.alert('Inicio de sesión incorrecto, vuelve a introducir los datos')
+          console.log('Credenciales incorrectas.');
         }
+      } catch (error) {
+        console.error('Error al comunicarse con el backend:', error);
+      }
+    
+  };
 
-    }
 
-    return <>
-        <Grid container
-            justifyContent="center"
-            alignItems="center"
-            style={{ minHeight: '100vh' }}
+  return (
+    <Container
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+      }}
+    >
+      <Paper elevation={20} style={{ padding: '2rem', width: '60%', height: '30hv' }}>
+
+        <Avatar
+            alt="Av"
+            src={loginImage} // Utiliza la variable importada
+            style={{
+            width: 60,
+            height: 60,
+            marginBottom: '1rem',
+            marginLeft: 'auto',
+            marginRight: 'auto',
+            textAlign: 'center',
+            }}
+        />
+
+        <Typography variant="h7" component="h5" align='center' style={{ marginBottom: '1rem' }}>
+          Iniciar Sesión
+        </Typography>
+
+        <Box
+          component="form"
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}
+          onSubmit={handleSubmit}
         >
-            <Grid item xs={3} md={3} l={2} xl={2}>
-                <Paper id='paper'>
-                    <Grid container
-                        justifyContent="center"
-                        alignItems="center"
-                    >
-                        <Avatar >
-                            <LockIcon color="error" />
-                        </Avatar>
-                        <Box id='caja' component='form' onSubmit={handleSubmit}>
-                            <TextField
-                                id='login'
-                                label='Usuario'
-                                variant='outlined'
-                                fullWidth
-                                autoFocus
-                                onChange={(event) => { setLogin({ ...login, user: event.target.value }) }}
-                            />
-                            <br />
-                            <TextField
-                                id='password'
-                                label='Contraseña'
-                                variant='outlined'
-                                type='password'
-                                fullWidth
-                                onChange={(event) => { setLogin({ ...login, pass: event.target.value }) }}
-                            />
-                            <Button
-                                id='boton'
-                                type="submit"
-                                variant='contained'
-                                fullWidth
-                            >
-                                Acceder
-                            </Button>
-                        </Box>
-                    </Grid>
-                </Paper>
-            </Grid>
-        </Grid>
-    </>
+          <TextField
+            id="login"
+            label="Usuario"
+            variant="outlined"
+            autoFocus
+            required
+            value={login}
+            onChange={(event) => setLogin(event.target.value)}
+            style={{ marginTop: '1rem' , width:'70%'}}
+
+          />
+
+          <TextField
+            id="password"
+            label="Contraseña"
+            variant="outlined"
+            type='password'
+            required
+            value={password}
+            onChange={(event) => setPassword(event.target.value)}
+            style={{ marginTop: '1rem' , width:'70%'}}
+          />
+
+          <Button
+            type="submit"
+            variant="contained"
+            style={{ marginTop: '3rem', width:'40%' }}
+          >
+            Acceder
+          </Button>
+        </Box>
+
+      </Paper>
+    </Container>
+  );
 }
-export default Login
 
-/*
-<Container>
-    <Typography variant="h1" component="h2">App con typography</Typography>
-    <Button color="success" variant="contained"> Hola </Button>
-</Container>
-
-const isVerifiedUser = () => {
-        fetch(`http://localhost:3030/login?user=${login.user}&password=${login.pass}`)
-            .then(response => response.json())
-            .then(response => {
-                if (response) {
-                    console.log(response)
-                }
-            })
-    }
-*/
+export default Login;

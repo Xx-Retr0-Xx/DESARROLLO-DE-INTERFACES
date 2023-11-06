@@ -5,37 +5,73 @@ import App from './App';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-//Marcos Mayor Lorenzo
-const theme = createTheme({
-  palette: {
-    mode: 'light',
-    primary: {
-      main: '#d85d00',
-    },
-    secondary: {
-      main: '#8d6e63',
-    },
-    background: {
-      default: '#f7a3a3',
-      paper: '#a3f7f7',
-    },
-    error: {
-      main: '#ff0000',
-    },
-  },
-  typography: {
-    fontFamily: 'Oswald',
-    fontSize: 18,
-    htmlFontSize: 20,
-  },
-})
+/**
+CssBaseline: es un componente que no muestra nada en pantalla. Lo que hace es la normalización
+CSS, que es que diferentes elementos se vean igual en diferentes navegadores. Los diferentes
+navegadores web tienen diferentes settings por defecto para cosas como el margen o el padding, así
+que la aplicación web se verá ligeramente diferentes entre navegadores. El CssBaseline soluciona
+eso.
+ */
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-<React.StrictMode>
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <App />
-    </ThemeProvider>
-</React.StrictMode>
-);
+
+/**
+ * AITOR SÁNCHEZ JIMÉNEZ
+ */
+
+    const theme = createTheme({
+        palette: {
+          mode: 'light',
+          primary: {
+            main: '#09e2ca',
+          },
+          secondary: {
+            main: '#e893ff',
+          },
+          text: {
+            secondary: '#000000',
+            disabled: 'rgba(0,0,0,0.38)',
+            primary: 'rgba(0,0,0,0.87)',
+          },
+          background: {
+            default: '#FFFFF',
+          },
+        },
+        typography: {
+          h1: {
+            fontFamily: 'Raleway',
+          },
+          h2: {
+            fontFamily: 'Slabo 27px',
+          },
+          h3: {
+            fontFamily: 'Roboto',
+          },
+          h5: {
+            fontFamily: 'Droid Serif',
+          },
+          h4: {
+            fontFamily: 'Oswald',
+          },
+          subtitle1: {
+            fontFamily: 'Source Sans Pro',
+          },
+          body1: {
+            fontFamily: 'Slabo 27px',
+          },
+          body2: {
+            fontFamily: 'PT Sans',
+          },
+        },
+
+    });
+
+    
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(
+    <React.StrictMode>
+        <ThemeProvider theme={theme}>
+          <CssBaseline />
+          <App />
+        </ThemeProvider>
+    </React.StrictMode>
+    );

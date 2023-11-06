@@ -1,13 +1,14 @@
-//Credenciales de la base de datos
+// Credenciales de la base de datos
 const config = {
     db: {
-        host: "localhost",
+      host: "localhost",
         user: "root",
-        password: "",
+        password: "1234",
         database: "bdgestion",
         port:"3306",
         connectTimeout: 60000
-    },
-}
-
-module.exports = config;
+    }
+  };
+  
+  module.exports = config;
+  

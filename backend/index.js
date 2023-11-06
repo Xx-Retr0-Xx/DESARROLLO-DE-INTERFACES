@@ -1,42 +1,49 @@
-//importo el express y el cors
-const express = require('express')
-const cors = require('cors')
-//importo el fichero login.js que está en la carpeta services
-const login = require('./services/login')
+const express = require('express');
+const cors = require('cors');
+const db = require('./services/db');
+const login = require('./services/login');
+const { testDatabaseConnection } = require('./services/db');
+const app = express();
+const port = 3030;
 
-//Definimos el puerto por que va a escuchar nuestra API las peticiones
-const port  = 3030
+/**
+ * AITOR SÁNCHEZ JIMÉNEZ
+ */
 
-const app = express()
-app.use(express.json())
-app.use(
-    express.urlencoded({
-        extended: true
-    })
-)
-app.use(cors())
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
+
+app.get('/', (req, res) => {
+  res.json({ message: 'Hola Mundo!' });
+});
 
 
+app.post('/login', async (req, res) => {
+  try {
+    const user = req.body.user;
+    const password = req.body.password;
 
-//Ejemplo para ver cómo funciona un endpoint:
-//este endpoint es / y devuelve un mensaje
-app.get('/', function (req, res) {
-    res.json({message: 'Hola Mundo!'})
-})
-
-//Creación del endpoint /login
-//llama al fichero login.js usando el método getUserData pasándole
-//el login (user) y la contraseña (password)
-app.get('/login', async function(req, res, next) {
-    console.log(req.query)
-    try {
-        res.json(await login.getUserData(req.query.user, req.query.password))
-    } catch (err) {
-        console.error(`Error while getting data `, err.message);
-        next(err);
+    if (!user || !password) {
+      res.status(400).json({ error: 'Falta usuario o contraseña' });
+      return;
     }
-})
 
-//Iniciamos la API
-app.listen(port)
-console.log('API escuchando en el puerto ' + port)
+    const userData = await login.getUserData(user, password);
+
+    if (userData.data) {
+      res.status(200).json(userData);
+    } else {
+      res.status(401).json({ error: 'Credenciales incorrectas' });
+    }
+  } catch (err) {
+    console.error('Error while getting data:', err.message);
+    res.status(500).json({ error: 'Error en el servidor' });
+  }
+});
+
+
+app.listen(port, async () => {
+  await testDatabaseConnection();
+  console.log(`\nAPI escuchando en el puerto ${port}`);
+});
