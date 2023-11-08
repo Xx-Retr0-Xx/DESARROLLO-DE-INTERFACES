@@ -4,6 +4,13 @@ import './index.css';
 import App from './App';
 import CssBaseline from '@mui/material/CssBaseline';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+import { Provider } from 'react-redux';
+import store from './store/index'
+
+/**
+ * AITOR SÁNCHEZ JIMÉNEZ
+ */
+
 
 /**
 CssBaseline: es un componente que no muestra nada en pantalla. Lo que hace es la normalización
@@ -11,11 +18,6 @@ CSS, que es que diferentes elementos se vean igual en diferentes navegadores. Lo
 navegadores web tienen diferentes settings por defecto para cosas como el margen o el padding, así
 que la aplicación web se verá ligeramente diferentes entre navegadores. El CssBaseline soluciona
 eso.
- */
-
-
-/**
- * AITOR SÁNCHEZ JIMÉNEZ
  */
 
     const theme = createTheme({
@@ -65,13 +67,23 @@ eso.
 
     });
 
-    
+    /**
+     *  Hace disponible el store para los componentes de
+        React envolviendo nuestra <App> con un <Provider>
+        de React-Redux
+     */
+
     const root = ReactDOM.createRoot(document.getElementById('root'));
     root.render(
     <React.StrictMode>
-        <ThemeProvider theme={theme}>
-          <CssBaseline />
-          <App />
-        </ThemeProvider>
+    <CssBaseline />
+      <ThemeProvider theme={theme}>
+        <Provider store={store}>
+      <App />
+      </Provider>
+    </ThemeProvider>
     </React.StrictMode>
     );
+
+    
+

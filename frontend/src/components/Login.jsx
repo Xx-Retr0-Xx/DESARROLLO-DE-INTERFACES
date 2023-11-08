@@ -3,12 +3,20 @@ import Button from '@mui/material/Button';
 import { Avatar, Container, Paper, Typography, TextField, Box } from '@mui/material';
 import loginImage from './login.jpg';
 
+import { useNavigate } from 'react-router-dom';
+import { useDispatch} from 'react-redux'
+import {loginActions}  from '../store/storelogin'; //Importamos el componente loginActions que está en el fichero storelogin.js
+
+
 /**
  * AITOR SÁNCHEZ JIMÉNEZ
  */
 
 
 function Login() {
+
+const navigate = useNavigate() //Para cambiar de página
+const dispatch = useDispatch() //Paracambiar el estado del store
 
   // Declaramos las variables login y password
   const [login, setLogin] = useState('');
@@ -20,7 +28,7 @@ function Login() {
     event.preventDefault(); // Evita que la página se recargue al enviar el formulario
 
       //Comunica con el backend para verificar las credenciales con el metodo POST
-      try {
+  
         const response = await fetch('http://localhost:3030/login', { //Redirección hacia la API del backend
           method: 'POST',
           headers: {
@@ -30,18 +38,23 @@ function Login() {
         });
         
         const data = await response.json()
-
+        
         if (login === data.data.login && password === data.data.password) { //Si establece la conexión con el backend mostrará los datos
-          window.alert('Inicio de sesión correcto, datos cargados en la consola')
           console.log('Datos correctos:', data.data);
+          
+          //Cambiamos el estado del store a login
+          dispatch(loginActions.login({
+            name: data.data.nombre, 
+            rol: data.data.rol 
+          }));
+
+          navigate('/home'); // Redirige a la página "Home"
 
         } else {
           window.alert('Inicio de sesión incorrecto, vuelve a introducir los datos')
           console.log('Credenciales incorrectas.');
         }
-      } catch (error) {
-        console.error('Error al comunicarse con el backend:', error);
-      }
+ 
     
   };
 
@@ -71,7 +84,7 @@ function Login() {
             }}
         />
 
-        <Typography variant="h7" component="h5" align='center' style={{ marginBottom: '1rem' }}>
+        <Typography variant="h5" component="h5" align='center' style={{ marginBottom: '1rem' }}>
           Iniciar Sesión
         </Typography>
 
