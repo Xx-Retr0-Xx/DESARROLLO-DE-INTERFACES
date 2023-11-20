@@ -3,6 +3,11 @@ const cors = require('cors');
 const db = require('./services/db');
 const login = require('./services/login');
 const { testDatabaseConnection } = require('./services/db');
+const { insertData } = require('./services/items');
+const { getData } = require('./services/items');
+const { deleteDataByID } = require('./services/items');
+const items = require('./services/items');
+
 const app = express();
 const port = 3030;
 
@@ -18,6 +23,8 @@ app.get('/', (req, res) => {
   res.json({ message: 'Hola Mundo!' });
 });
 
+
+{/*FUNCIONES PARA EL LOGIN */}
 
 app.post('/login', async (req, res) => {
   try {
@@ -47,3 +54,50 @@ app.listen(port, async () => {
   await testDatabaseConnection();
   console.log(`\nAPI escuchando en el puerto ${port}`);
 });
+
+
+{/*FUNCIONES PARA EL CRUD */}
+
+//Insertar datos
+app.post('/addItem', async function(req, res, next) {
+  try {
+    const result = await insertData(req, res);
+    if (result > 0) {
+      res.json({ message: 'Datos insertados correctamente' });
+    } else {
+      res.status(500).json({ error: 'Error al insertar datos' });
+    }
+  } catch (err) {
+    console.error(`Error while inserting items `, err.message);
+    next(err);
+  }
+});
+
+//Obtener Datos
+app.get('/getItems', async function (req, res, next) {
+  try {
+    res.json(await items.getData());
+  } catch (err) {
+    console.error(`Error while getting items `, err.message);
+    next(err);
+  }
+});
+
+
+//Eliminar datos
+app.delete('/deleteDataByID/:itemId', async function (req, res, next) {
+  try {
+    const itemId = req.params.itemId;
+    const result = await items.deleteDataByID({ id: itemId });
+    if (result > 0) {
+      res.json({ affectedRows: result });
+    } else {
+      res.status(500).json({ error: 'Error al eliminar el registro' });
+    }
+  } catch (err) {
+    console.error(`Error while deleting item `, err.message);
+    next(err);
+  }
+});
+
+ 

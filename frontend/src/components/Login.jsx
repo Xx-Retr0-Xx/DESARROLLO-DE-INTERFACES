@@ -84,7 +84,7 @@ const dispatch = useDispatch() //Paracambiar el estado del store
             }}
         />
 
-        <Typography variant="h5" component="h5" align='center' style={{ marginBottom: '1rem' }}>
+        <Typography variant="h6" component="h2" align='center' style={{ marginBottom: '1rem' }}>
           Iniciar Sesión
         </Typography>
 

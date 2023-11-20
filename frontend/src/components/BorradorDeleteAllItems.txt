@@ -1,0 +1,46 @@
+Home.jsx: 
+
+  try {
+    const response = await fetch('http://localhost:3030/deleteAllItems', {
+      method: 'DELETE',
+    });
+
+    const result = await response.json();
+
+    if (result.affectedRows > 0) {
+      alert('Todos los datos eliminados con éxito');
+      handleGetItems() 
+    } else {
+      alert('Error al eliminar todos los datos');
+    }
+  } catch (error) {
+    console.error('Error during fetch:', error.message);
+    alert('Error al conectar con el servidor');
+  }
+
+
+  items.js:
+
+  // Agrega esta nueva función para eliminar todos los registros
+  async function deleteAllData() {
+  const result = await db.query(`DELETE FROM coleccion`);
+  return result.affectedRows;
+}
+
+
+index.js:
+
+//Eliminar datos
+app.delete('/deleteAllItems', async function (req, res, next) {
+  try {
+    const result = await items.deleteAllData(); // Implementa la función deleteAllData en tu archivo items.js
+    if (result > 0) {
+      res.json({ affectedRows: result });
+    } else {
+      res.status(500).json({ error: 'Error al eliminar todos los datos' });
+    }
+  } catch (err) {
+    console.error(`Error while deleting all items `, err.message);
+    next(err);
+  }
+});
